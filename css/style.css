@@ -167,12 +167,24 @@ img {
   position: relative;
 }
 .project__img-holder {
-  position: relative;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3; /* 設定寬高比為 4:3 */
+  position: relative;
+  overflow: hidden;
 }
+
+/* 新增：強制靠上對齊的類別 */
+.img-top {
+  object-position: top !important;
+}
+.img-left {
+  object-position: left !important;
+}
+
 .project__img {
   width: 100%;
+  height:100%;
+  object-fit: cover;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.7);
   transition: all 0.3s ease-in-out;
@@ -341,16 +353,4 @@ img {
     margin-right: 0;
   }
 }
-
-/* 當螢幕寬度小於 768px 時觸發 */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 24px; /* 縮小手機版的標題 */
-    }
-    .blue-bar {
-        padding: 20px; /* 增加留白，讓文字不貼邊 */
-        font-size: 14px;
-    }
-}
-
 
