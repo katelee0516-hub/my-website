@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Kate Lee | 2D Game Animation & FX</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- jQuery & Isotope & ImagesLoaded -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+</head>
+<body>
+
+<section class="">
+  <div class="wrapper grid-1 text-center">
+    <div class="col">
+      <div class="project-filter">
+        <a href="#" class="filter active" data-filter="*">All</a>
+        <a href="#" class="filter" data-filter=".web-design">Dynamic Design</a>
+        <a href="#" class="filter" data-filter=".ad">Advertisement</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Grid -->
+  <div class="wrapper">
+    <div id="project-grid" class="grid project-grid grid-4-col small-gutter">
+
+      <!-- 範例 Project -->
+      <div class="col project project--hover-2 web-design">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/1.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Dynamic Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col project project--hover-2 web-design">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/1.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Dynamic Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col project project--hover-2 web-design">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/3.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Dynamic Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col project project--hover-2 web-design">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/3.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Dynamic Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col project project--hover-2 ad">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/2.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Advertisement</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col project project--hover-2 ad">
+        <div class="project__img-holder">
+          <img src="http://deothemes.com/envato/canna/html/img/portfolio/2.jpg" alt="" class="project__img">
+          <div class="project__overlay">
+            <div class="project__icons"></div>
+          </div>
+          <div class="project__description">
+            <h3 class="project__title">Spine 2D</h3>
+            <span class="project__category">Advertisement</span>
+          </div>
+        </div>
+      </div>
+      <!-- 可依需要新增更多 Project -->
+
+    </div>
+  </div>
+</section>
+
+<!-- JS -->
+<script>
+$(document).ready(function(){
+
+  // 初始化 Isotope
+  var $grid = $('#project-grid').imagesLoaded(function(){
+    $grid.isotope({
+      itemSelector: '.col.project',
+      layoutMode: 'fitRows',
+      percentPosition: true
+    });
+  });
+
+  // filter 按鈕
+  $('.project-filter').on('click', 'a', function(e){
+    e.preventDefault();
+    var filterValue = $(this).attr('data-filter');
+    $grid.isotope({ filter: filterValue });
+
+    // 切換 active class
+    $('.project-filter a').removeClass('active');
+    $(this).addClass('active');
+  });
+
+});
+</script>
+
+</body>
+</html>
