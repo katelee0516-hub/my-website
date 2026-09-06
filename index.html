@@ -1063,7 +1063,23 @@
       }
 
       .modal-media {
-        min-height: 250px;
+        min-height: 0;
+      }
+
+      .modal-container {
+        width: 100%;
+
+        max-height: calc(100dvh - 24px);
+      }
+
+      .modal-media iframe {
+        min-height: 180px;
+
+        max-height: 58dvh;
+      }
+
+      .modal-media iframe.is-portrait {
+        height: min(58dvh, 680px);
       }
 
     }
@@ -4183,42 +4199,20 @@
       }
 
       if (googleDriveFileId) {
-        const isIOS =
-          /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        const iframe = document.createElement("iframe");
 
-        if (isIOS) {
-          /* iOS 改用原生控制列，避免 Drive iframe 疊出兩組時間軸。 */
-          const videoElement = document.createElement("video");
+        iframe.src = `https://drive.google.com/file/d/${googleDriveFileId}/preview`;
+        iframe.title = `${title} video`;
+        iframe.allow = "autoplay; fullscreen";
+        iframe.allowFullscreen = true;
+        iframe.style.aspectRatio = aspect;
 
-          videoElement.src =
-            `https://drive.usercontent.google.com/download?id=${googleDriveFileId}&export=download&confirm=t`;
-          videoElement.controls = true;
-          videoElement.autoplay = true;
-          videoElement.playsInline = true;
-          videoElement.setAttribute("playsinline", "");
-          videoElement.preload = "metadata";
-          videoElement.poster = image;
-          videoElement.style.aspectRatio = aspect;
-
-          modalMedia.appendChild(videoElement);
-        } else {
-          /* 桌機保留 Drive 預覽播放器，確保公開分享連結能正常串流。 */
-          const iframe = document.createElement("iframe");
-
-          iframe.src = `https://drive.google.com/file/d/${googleDriveFileId}/preview`;
-          iframe.title = `${title} video`;
-          iframe.allow = "autoplay; fullscreen";
-          iframe.allowFullscreen = true;
-          iframe.style.aspectRatio = aspect;
-
-          if (aspect === "9 / 16") {
-            iframe.classList.add("is-portrait");
-          }
-
-          hideCursorOverEmbeddedVideo(iframe);
-          modalMedia.appendChild(iframe);
+        if (aspect === "9 / 16") {
+          iframe.classList.add("is-portrait");
         }
+
+        hideCursorOverEmbeddedVideo(iframe);
+        modalMedia.appendChild(iframe);
         return;
       }
 
