@@ -1,0 +1,4524 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>KATE — Creative Designer Portfolio</title>
+
+  <meta
+    name="description"
+    content="KATE Creative Designer Portfolio — Motion, Graphic Design, AI Visuals."
+  />
+
+  <!-- Tailwind CSS CDN / Tailwind CSS 免編譯版本 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: [
+              "Inter",
+              "Noto Sans TC",
+              "system-ui",
+              "sans-serif"
+            ],
+          },
+
+          colors: {
+            accent: "#c8ff00",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+
+    /* =========================================================
+       基礎設定 / BASE
+    ========================================================= */
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #080808;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    /* 首頁後先顯示作品，再顯示關於我 / Works before About */
+    main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #home {
+      order: 1;
+    }
+
+    #works {
+      order: 2;
+    }
+
+    #about {
+      order: 3;
+    }
+
+    #contact {
+      order: 4;
+    }
+
+    ::selection {
+      background: #c8ff00;
+      color: #000;
+    }
+
+
+    /* =========================================================
+       捲軸 / SCROLLBAR
+    ========================================================= */
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #080808;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #c8ff00;
+    }
+
+
+    /* =========================================================
+       雜訊質感 / NOISE
+    ========================================================= */
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    }
+
+
+    /* =========================================================
+       導覽列 / NAVBAR
+    ========================================================= */
+
+    .nav-glass {
+      background: rgba(8, 8, 8, 0.65);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      bottom: -6px;
+
+      width: 0;
+      height: 1px;
+
+      background: #c8ff00;
+
+      transition: width .3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+
+    /* =========================================================
+       首頁 Hero / HERO
+    ========================================================= */
+
+    .hero {
+      min-height: 100vh;
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute;
+
+      inset: 0;
+
+      opacity: 0.12;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,.08) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.08) 1px,
+          transparent 1px
+        );
+
+      background-size: 80px 80px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent
+        );
+    }
+
+    .hero-glow {
+      position: absolute;
+
+      width: 700px;
+      height: 700px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(200,255,0,.10) 0%,
+          rgba(200,255,0,.04) 30%,
+          transparent 70%
+        );
+
+      top: -300px;
+      right: -200px;
+
+      pointer-events: none;
+    }
+
+    .hero-title {
+      letter-spacing: -0.07em;
+      line-height: .88;
+    }
+
+    .hero-image {
+      transition:
+        transform 1s cubic-bezier(.2,.8,.2,1),
+        opacity .7s ease;
+    }
+
+    .hero-image.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .hero-image.inactive {
+      opacity: 0;
+      transform: scale(1.08);
+    }
+
+
+    /* =========================================================
+       按鈕 / BUTTON
+    ========================================================= */
+
+    .btn-primary {
+      background: #c8ff00;
+      color: #000;
+
+      transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 15px 40px rgba(200,255,0,.15);
+    }
+
+    .btn-outline {
+      border:
+        1px solid rgba(255,255,255,.18);
+
+      transition:
+        background .3s ease,
+        border-color .3s ease,
+        transform .3s ease;
+    }
+
+    .btn-outline:hover {
+      background:
+        rgba(255,255,255,.06);
+
+      border-color:
+        rgba(255,255,255,.4);
+
+      transform:
+        translateY(-3px);
+    }
+
+
+    /* =========================================================
+       區塊標題 / SECTION
+    ========================================================= */
+
+    .section-label {
+      color: #c8ff00;
+
+      letter-spacing: .18em;
+
+      font-size: .72rem;
+
+      font-weight: 700;
+    }
+
+    .section-title {
+      letter-spacing: -.05em;
+    }
+
+
+    /* =========================================================
+       作品分類按鈕 / WORK FILTER BUTTON
+    ========================================================= */
+
+    .filter-button {
+      position: relative;
+
+      color: rgba(255,255,255,.38);
+
+      padding-bottom: 8px;
+
+      font-size: 13px;
+
+      letter-spacing: .08em;
+
+      font-weight: 600;
+
+      transition:
+        color .3s ease;
+    }
+
+    .filter-button::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      bottom: 0;
+
+      width: 0;
+      height: 1px;
+
+      background: #c8ff00;
+
+      transition:
+        width .3s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .filter-button:hover {
+      color: #fff;
+    }
+
+    .filter-button.active {
+      color: #fff;
+    }
+
+    .filter-button.active::after {
+      width: 100%;
+    }
+
+
+    /* =========================================================
+       作品卡片 / PROJECT CARD
+    ========================================================= */
+
+    .project-item {
+      min-width: 0;
+
+      transition:
+        opacity .35s ease,
+        transform .35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .project-item.filter-hidden {
+      display: none;
+    }
+
+    .project-card {
+      position: relative;
+
+      cursor: pointer;
+
+      overflow: hidden;
+
+      background: #111;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      transition:
+        transform .5s cubic-bezier(.2,.8,.2,1),
+        border-color .4s ease,
+        box-shadow .4s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-7px);
+
+      border-color:
+        rgba(200,255,0,.25);
+
+      box-shadow:
+        0 20px 45px rgba(0,0,0,.35);
+    }
+
+
+    /* =========================================================
+       作品縮圖 / PROJECT IMAGE
+    ========================================================= */
+
+    .project-media {
+      position: relative;
+
+      overflow: hidden;
+
+      aspect-ratio: 1/ 1;
+
+      background: #111;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform .8s cubic-bezier(.2,.8,.2,1),
+        filter .5s ease;
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(1.055);
+
+      filter: brightness(.72);
+    }
+
+
+    /* =========================================================
+       卡片暗角 / CARD OVERLAY
+    ========================================================= */
+
+    .project-shade {
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(0,0,0,.45),
+          transparent 45%
+        );
+
+      opacity: .25;
+
+      transition:
+        opacity .4s ease;
+    }
+
+    .project-card:hover .project-shade {
+      opacity: .7;
+    }
+
+
+    /* =========================================================
+       作品類型 Icon / PROJECT TYPE ICON
+    ========================================================= */
+
+    .project-type-icon {
+      position: absolute;
+
+      top: 14px;
+      right: 14px;
+
+      width: 42px;
+      height: 42px;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      z-index: 5;
+
+      color: #fff;
+
+      background:
+        rgba(8,8,8,.55);
+
+      border:
+        1px solid rgba(255,255,255,.25);
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        background .35s ease,
+        color .35s ease,
+        border-color .35s ease,
+        transform .35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .project-card:hover .project-type-icon {
+      background: #c8ff00;
+
+      color: #000;
+
+      border-color: #c8ff00;
+
+      transform: scale(1.08);
+    }
+
+
+    /* =========================================================
+       Play 三角形 / PLAY ICON
+    ========================================================= */
+
+    .play-symbol {
+      width: 0;
+      height: 0;
+
+      margin-left: 3px;
+
+      border-top:
+        6px solid transparent;
+
+      border-bottom:
+        6px solid transparent;
+
+      border-left:
+        9px solid currentColor;
+    }
+
+
+    /* =========================================================
+       平面作品箭頭 / GRAPHIC ARROW
+    ========================================================= */
+
+    .arrow-symbol {
+      font-size: 18px;
+
+      line-height: 1;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* =========================================================
+       作品資訊 / PROJECT INFO
+    ========================================================= */
+
+    .project-info {
+      padding: 17px 17px 19px;
+    }
+
+    .project-number {
+      color:
+        rgba(255,255,255,.24);
+
+      font-size: 11px;
+    }
+
+    .project-title {
+      font-size: 17px;
+
+      font-weight: 700;
+
+      letter-spacing: -.02em;
+
+      line-height: 1.25;
+    }
+
+    .project-description {
+      color:
+        rgba(255,255,255,.38);
+
+      font-size: 12px;
+
+      margin-top: 7px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+
+    /* =========================================================
+       技能標籤 / SKILL TAG
+    ========================================================= */
+
+    .skill-tag {
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.025);
+
+      transition:
+        border-color .3s ease,
+        background .3s ease,
+        transform .3s ease;
+    }
+
+    .skill-tag:hover {
+      border-color:
+        rgba(200,255,0,.45);
+
+      background:
+        rgba(200,255,0,.06);
+
+      transform:
+        translateY(-3px);
+    }
+
+
+    /* =========================================================
+       履歷時間軸 / TIMELINE
+    ========================================================= */
+
+    .timeline-line {
+      position: absolute;
+
+      left: 7px;
+      top: 12px;
+      bottom: 12px;
+
+      width: 1px;
+
+      background:
+        rgba(255,255,255,.12);
+    }
+
+    .timeline-dot {
+      width: 15px;
+      height: 15px;
+
+      border:
+        2px solid #c8ff00;
+
+      background: #080808;
+
+      border-radius: 50%;
+
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    /* =========================================================
+       滾動進場動畫 / REVEAL ANIMATION
+    ========================================================= */
+
+    .reveal {
+      opacity: 0;
+
+      transform:
+        translateY(35px);
+
+      transition:
+        opacity .8s ease,
+        transform .8s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+    /* =========================================================
+       跑馬燈 / MARQUEE
+    ========================================================= */
+
+    .marquee {
+      overflow: hidden;
+
+      white-space: nowrap;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+
+      border-bottom:
+        1px solid rgba(255,255,255,.08);
+    }
+
+    .marquee-track {
+      display: inline-flex;
+
+      animation:
+        marquee 20s linear infinite;
+    }
+
+    @keyframes marquee {
+
+      from {
+        transform:
+          translateX(0);
+      }
+
+      to {
+        transform:
+          translateX(-50%);
+      }
+
+    }
+
+
+    /* =========================================================
+       手機版選單 / MOBILE MENU
+    ========================================================= */
+
+    #mobileMenu {
+      transition:
+        opacity .3s ease,
+        transform .3s ease;
+    }
+
+    #mobileMenu.hidden-menu {
+      opacity: 0;
+
+      transform:
+        translateY(-10px);
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       自訂滑鼠游標 / CUSTOM CURSOR
+    ========================================================= */
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+
+      background: #c8ff00;
+
+      border-radius: 50%;
+
+      position: fixed;
+
+      pointer-events: none;
+
+      z-index: 10000;
+
+      transform:
+        translate(-50%, -50%);
+
+      mix-blend-mode: difference;
+
+      transition: opacity .15s ease;
+    }
+
+    .cursor-dot.is-hidden {
+      opacity: 0;
+    }
+
+
+    /* =========================================================
+       作品放大彈窗 / PROJECT LIGHTBOX
+    ========================================================= */
+
+    #projectModal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 9000;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      background:
+        rgba(0,0,0,.88);
+
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none;
+
+      transition:
+        opacity .35s ease,
+        visibility .35s ease;
+    }
+
+    #projectModal.active {
+      opacity: 1;
+
+      visibility: visible;
+
+      pointer-events: auto;
+    }
+
+    .modal-container {
+      width: min(1400px, 96vw);
+
+      max-height: 92vh;
+
+      overflow-y: auto;
+
+      background: #0c0c0c;
+
+      border:
+        1px solid rgba(255,255,255,.12);
+
+      transform:
+        translateY(20px) scale(.98);
+
+      opacity: 0;
+
+      transition:
+        opacity .4s ease,
+        transform .4s cubic-bezier(.2,.8,.2,1);
+    }
+
+    #projectModal.active .modal-container {
+      transform:
+        translateY(0) scale(1);
+
+      opacity: 1;
+    }
+
+    .modal-media {
+      position: relative;
+
+      background: #050505;
+
+      min-height: 400px;
+    }
+
+    .modal-media img {
+      width: 100%;
+
+      height: auto;
+
+      /* 保持圖片原始比例；超出視窗時由彈窗向下捲動 */
+      max-height: none;
+
+      display: block;
+    }
+
+    .modal-media video {
+      width: 100%;
+
+      max-height: 78vh;
+
+      display: block;
+
+      background: #000;
+    }
+
+    /* 嵌入影片 / Embedded video */
+    .modal-media iframe {
+      width: 100%;
+
+      aspect-ratio: 16 / 9;
+
+      max-height: 78vh;
+
+      display: block;
+
+      border: 0;
+
+      background: #000;
+    }
+
+    .modal-media iframe.is-portrait {
+      width: auto;
+
+      height: min(78vh, 820px);
+
+      max-width: 100%;
+
+      margin: 0 auto;
+    }
+
+    .modal-video-tabs {
+      display: none;
+
+      flex-wrap: wrap;
+
+      gap: .6rem;
+
+      margin-top: 1.5rem;
+    }
+
+    .modal-video-tabs.is-visible {
+      display: flex;
+    }
+
+    .modal-video-tab {
+      padding: .6rem .9rem;
+
+      border: 1px solid rgba(255, 255, 255, .2);
+
+      background: transparent;
+
+      color: rgba(255, 255, 255, .65);
+
+      font-size: .75rem;
+
+      transition: .2s ease;
+    }
+
+    .modal-video-tab:hover,
+    .modal-video-tab.active {
+      border-color: #c8ff00;
+
+      background: #c8ff00;
+
+      color: #080808;
+    }
+
+    .modal-close {
+      position: fixed;
+
+      top: 25px;
+      right: 30px;
+
+      z-index: 9200;
+
+      width: 48px;
+      height: 48px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255,255,255,.2);
+
+      background:
+        rgba(8,8,8,.7);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      font-size: 22px;
+
+      transition:
+        color .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        transform .3s ease;
+    }
+
+    .modal-close:hover {
+      color: #000;
+
+      background: #c8ff00;
+
+      border-color: #c8ff00;
+
+      transform:
+        rotate(90deg);
+    }
+
+    .modal-nav {
+      position: fixed;
+      top: 50%;
+
+      z-index: 9200;
+
+      width: 48px;
+      height: 48px;
+
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.2);
+
+      background: rgba(8,8,8,.7);
+      color: #fff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 24px;
+      line-height: 1;
+
+      transform: translateY(-50%);
+      transition: color .3s ease, background .3s ease, border-color .3s ease;
+    }
+
+    .modal-nav:hover:not(:disabled) {
+      color: #000;
+      background: #c8ff00;
+      border-color: #c8ff00;
+    }
+
+    .modal-nav:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .modal-prev { left: 30px; }
+    .modal-next { right: 30px; }
+
+
+    /* =========================================================
+       分類切換動畫 / FILTER ANIMATION
+    ========================================================= */
+
+    @keyframes projectAppear {
+
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(14px) scale(.98);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0) scale(1);
+      }
+
+    }
+
+    .project-item.filter-show {
+      animation:
+        projectAppear .45s
+        cubic-bezier(.2,.8,.2,1)
+        both;
+    }
+
+
+    /* =========================================================
+       響應式設定 / RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 768px) {
+
+      .cursor-dot {
+        display: none;
+      }
+
+      #projectModal {
+        padding: 12px;
+      }
+
+      .modal-prev { left: 12px; }
+      .modal-next { right: 12px; }
+
+      .modal-close {
+        top: 15px;
+        right: 15px;
+      }
+
+      .modal-media {
+        min-height: 250px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- 雜訊背景 / Noise Overlay -->
+  <div class="noise"></div>
+
+  <!-- 自訂游標 / Custom Cursor -->
+  <div
+    class="cursor-dot"
+    id="cursorDot">
+  </div>
+
+
+  <!-- =======================================================
+       導覽列 / NAVIGATION
+  ======================================================== -->
+
+  <header
+    class="
+      fixed
+      top-0
+      left-0
+      right-0
+      z-50
+      nav-glass
+    "
+  >
+
+    <nav
+      class="
+        max-w-7xl
+        mx-auto
+        px-6
+        lg:px-10
+        h-20
+        flex
+        items-center
+        justify-between
+      "
+    >
+
+      <a
+        href="#home"
+        class="
+          text-xl
+          font-black
+          tracking-tighter
+        "
+      >
+        KATE<span class="text-accent">.</span> LI
+      </a>
+
+
+      <!-- 桌面版選單 / Desktop Menu -->
+
+      <div
+        class="
+          hidden
+          md:flex
+          items-center
+          gap-10
+          text-sm
+          text-white/70
+        "
+      >
+
+        <a
+          href="#home"
+          class="
+            nav-link
+            hover:text-white
+            transition
+          "
+        >
+          HOME
+        </a>
+
+        <a
+          href="#works"
+          class="
+            nav-link
+            hover:text-white
+            transition
+          "
+        >
+          WORKS
+        </a>
+
+        <a
+          href="#about"
+          class="
+            nav-link
+            hover:text-white
+            transition
+          "
+        >
+          ABOUT
+        </a>
+
+        <!-- RESUME temporarily hidden
+        <a
+          href="#resume"
+          class="
+            nav-link
+            hover:text-white
+            transition
+          "
+        >
+          RESUME
+        </a>
+        -->
+
+        <a
+          href="#contact"
+          class="
+            px-5
+            py-2.5
+            rounded-full
+            border
+            border-white/15
+            hover:border-accent
+            hover:text-accent
+            transition
+          "
+        >
+          CONTACT
+        </a>
+
+      </div>
+
+
+      <!-- 手機版按鈕 / Mobile Menu Button -->
+
+      <button
+        id="menuButton"
+        class="
+          md:hidden
+          w-10
+          h-10
+          flex
+          items-center
+          justify-center
+          border
+          border-white/10
+          rounded-full
+        "
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+    </nav>
+
+
+    <!-- 手機版選單 / Mobile Menu -->
+
+    <div
+      id="mobileMenu"
+      class="
+        hidden-menu
+        md:hidden
+        absolute
+        top-20
+        left-0
+        right-0
+        bg-[#080808]/95
+        backdrop-blur-xl
+        border-b
+        border-white/10
+      "
+    >
+
+      <div
+        class="
+          px-6
+          py-8
+          flex
+          flex-col
+          gap-6
+          text-lg
+        "
+      >
+
+        <a href="#home" class="mobile-link">
+          HOME
+        </a>
+
+        <a href="#works" class="mobile-link">
+          WORKS
+        </a>
+
+        <a href="#about" class="mobile-link">
+          ABOUT
+        </a>
+
+        <!-- RESUME temporarily hidden
+        <a href="#resume" class="mobile-link">
+          RESUME
+        </a>
+        -->
+
+        <a
+          href="#contact"
+          class="
+            mobile-link
+            text-accent
+          "
+        >
+          CONTACT
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main>
+
+
+    <!-- =======================================================
+         首頁 / HERO
+    ======================================================== -->
+
+    <section
+      id="home"
+      class="
+        hero
+        flex
+        items-start
+      "
+    >
+
+      <div class="hero-grid"></div>
+
+      <div class="hero-glow"></div>
+
+
+      <div
+        class="
+          max-w-7xl
+          mx-auto
+          px-6
+          lg:px-10
+          w-full
+          pt-24
+          lg:pt-28
+        "
+      >
+
+        <div
+          class="
+            grid
+            lg:grid-cols-12
+            gap-10
+            items-center
+          "
+        >
+
+
+          <!-- 左側文字 / Left Content -->
+
+          <div
+            class="
+              lg:col-span-7
+              relative
+              z-10
+            "
+          >
+
+            <p class="section-label mb-7">
+              CREATIVE DESIGNER / AI VISUAL
+            </p>
+
+            <h1
+              class="
+                hero-title
+                text-[17vw]
+                lg:text-[9rem]
+                font-black
+                uppercase
+              "
+            >
+              CREATE
+
+              <br />
+
+              <span class="text-accent">
+                VISUALS.
+              </span>
+
+            </h1>
+
+            <p
+              class="
+                mt-8
+                max-w-xl
+                text-white/55
+                text-base
+                md:text-lg
+                leading-relaxed
+              "
+            >
+              用設計、動態影像與 AI 輔助，
+              創造作品。
+
+              <br class="hidden md:block" />
+
+              <!-- Motion Design · Graphic Design · AI Visual -->
+            </p>
+
+
+            <div
+              class="
+                flex
+                flex-wrap
+                gap-4
+                mt-9
+              "
+            >
+
+              <a
+                href="#works"
+                class="
+                  btn-primary
+                  px-7
+                  py-4
+                  rounded-full
+                  font-bold
+                  text-sm
+                "
+              >
+                MY WORKS
+              </a>
+
+              <a
+                href="#about"
+                class="
+                  btn-outline
+                  px-7
+                  py-4
+                  rounded-full
+                  font-bold
+                  text-sm
+                "
+              >
+                ABOUT ME
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- 右側輪播 / Right Slider -->
+
+          <div
+            class="
+              lg:col-span-5
+              relative
+            "
+          >
+
+            <div
+              class="
+                relative
+                aspect-square
+                overflow-hidden
+                bg-neutral-900
+              "
+            >
+
+              <img
+                class="
+                  hero-image
+                  active
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  object-cover
+                "
+                src="assets/images/top_01_large.jpg"
+                alt="Creative visual project"
+              />
+
+
+              <img
+                class="
+                  hero-image
+                  inactive
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  object-cover
+                "
+                src="assets/images/top_02_1_large.jpg"
+                alt="Abstract digital artwork"
+              />
+
+              <!-- 第 03 張輪播暫時停用
+              <img
+                class="
+                  hero-image
+                  inactive
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  object-cover
+                "
+                src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1200&q=85"
+                alt="Digital art"
+              />
+              -->
+
+
+              <!-- 輪播資訊 / Slider Information -->
+
+              <div
+                class="
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  p-6
+                  md:p-8
+                  bg-gradient-to-t
+                  from-black/80
+                  to-transparent
+                "
+              >
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    items-end
+                  "
+                >
+
+                  <div>
+
+                    <p
+                      class="
+                        text-xs
+                        text-accent
+                        tracking-widest
+                      "
+                    >
+                      <!-- TEXT. -->
+                    </p>
+
+                    <h3
+                      id="slideTitle"
+                      class="
+                        text-2xl
+                        font-bold
+                        mt-2
+                      "
+                    >
+                      <!-- TEXE -->
+                    </h3>
+
+                  </div>
+
+                  <div
+                    id="slideCounter"
+                    class="
+                      text-xs
+                      text-white/50
+                    "
+                  >
+                    01 / 02
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- 輪播控制 / Slider Controls -->
+
+            <div
+              class="
+                flex
+                items-center
+                justify-between
+                mt-5
+              "
+            >
+
+              <div class="flex gap-2">
+
+                <button
+                  class="
+                    slide-dot
+                    w-8
+                    h-1
+                    bg-accent
+                  "
+                  data-slide="0">
+                </button>
+
+                <button
+                  class="
+                    slide-dot
+                    w-8
+                    h-1
+                    bg-white/20
+                  "
+                  data-slide="1">
+                </button>
+
+                <!-- 第 03 個輪播控制點暫時停用
+                <button
+                  class="
+                    slide-dot
+                    w-8
+                    h-1
+                    bg-white/20
+                  "
+                  data-slide="2">
+                </button>
+                -->
+
+              </div>
+
+              <div
+                class="
+                  text-xs
+                  text-white/30
+                "
+              >
+                SCROLL TO EXPLORE ↓
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         跑馬燈 / MARQUEE
+    ======================================================== -->
+
+    <div class="marquee py-5">
+
+      <div
+        class="
+          marquee-track
+          text-3xl
+          md:text-5xl
+          font-black
+          tracking-tight
+        "
+      >
+
+        <span class="mx-8">
+          MOTION DESIGN
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          GRAPHIC DESIGN
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          AI VISUAL
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          CREATIVE
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+
+        <span class="mx-8">
+          MOTION DESIGN
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          GRAPHIC DESIGN
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          AI VISUAL
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+        <span class="mx-8">
+          CREATIVE
+        </span>
+
+        <span class="text-accent">
+          ✦
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =======================================================
+         關於我 / ABOUT
+    ======================================================== -->
+
+    <section
+      id="about"
+      class="
+        py-20
+        lg:py-28
+      "
+    >
+
+      <div
+        class="
+          max-w-7xl
+          mx-auto
+          px-6
+          lg:px-10
+        "
+      >
+
+        <div
+          class="
+            grid
+            lg:grid-cols-12
+            gap-12
+          "
+        >
+
+          <div
+            class="
+              lg:col-span-4
+              reveal
+            "
+          >
+
+            <p class="section-label">
+              ABOUT
+            </p>
+
+            <h2
+              class="
+                section-title
+                text-5xl
+                md:text-7xl
+                font-black
+                mt-5
+              "
+            >
+              WHO
+
+              <br />
+
+              <span class="text-white/30">
+                I AM.
+              </span>
+
+            </h2>
+
+          </div>
+
+
+          <div
+            class="
+              lg:col-span-8
+              reveal
+            "
+          >
+
+            <p
+              class="
+                text-2xl
+                md:text-4xl
+                leading-tight
+                tracking-tight
+              "
+            >
+              I create visual experiences through
+
+              <span class="text-accent">
+                design, motion and AI.
+              </span>
+
+            </p>
+
+
+            <div
+              class="
+                grid
+                md:grid-cols-2
+                gap-8
+                mt-12
+                text-white/55
+                leading-relaxed
+              "
+            >
+
+              <p>
+                我是一名以多媒體視覺設計為核心的創作者，
+                對影像、動畫、平面設計以及新型 AI 創作工具
+                保持高度興趣。
+              </p>
+
+              <p>
+                希望透過不同工具與技術，
+                將想法轉化成具有視覺吸引力的作品，
+                並持續探索 AI 與傳統設計的結合方式。
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 技能 / Skills within About -->
+        <div
+          class="
+            mt-20
+            pt-12
+            border-t
+            border-white/10
+            reveal
+          "
+        >
+          <p class="section-label">SKILLS</p>
+
+          <h3
+            class="
+              text-3xl
+              md:text-5xl
+              font-black
+              mt-4
+              mb-8
+            "
+          >
+            TOOLBOX<span class="text-accent">.</span>
+          </h3>
+
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-tag px-5 py-3 rounded-full">Photoshop</span>
+            <span class="skill-tag px-5 py-3 rounded-full">Illustrator</span>  
+            <span class="skill-tag px-5 py-3 rounded-full">Spine 2D</span>
+            <span class="skill-tag px-5 py-3 rounded-full">After Effects</span>
+            <span class="skill-tag px-5 py-3 rounded-full">Premiere Pro</span>
+            <span class="skill-tag px-5 py-3 rounded-full">Adobe Animate</span>
+            <span class="skill-tag px-5 py-3 rounded-full">ComfyUI</span>
+            <span class="skill-tag px-5 py-3 rounded-full">Figma</span>
+            <span class="skill-tag px-5 py-3 rounded-full">Adobe InDesign</span>
+            <span class="skill-tag px-5 py-3 rounded-full">HTML5、CSS、JavaScript </span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         作品 / WORKS
+    ======================================================== -->
+
+    <section
+      id="works"
+      class="
+        py-20
+        lg:py-28
+        bg-[#0c0c0c]
+      "
+    >
+
+      <div
+        class="
+          max-w-[1400px]
+          mx-auto
+          px-8
+          md:px-12
+          lg:px-16
+        "
+      >
+
+
+        <!-- 作品標題 / Works Header -->
+
+        <div
+          class="
+            flex
+            flex-col
+            lg:flex-row
+            lg:items-end
+            justify-between
+            gap-10
+            mb-12
+            reveal
+          "
+        >
+
+          <div>
+
+            <p class="section-label">
+              SELECTED WORKS
+            </p>
+
+            <h2
+              class="
+                section-title
+                text-5xl
+                md:text-8xl
+                font-black
+                mt-5
+              "
+            >
+              WORKS<span class="text-accent">.</span>
+            </h2>
+
+          </div>
+
+
+          <p
+            class="
+              text-white/40
+              max-w-sm
+            "
+          >
+            作品集</p>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             作品分類 / WORK FILTER
+        ==================================================== -->
+
+        <div
+          class="
+            flex
+            flex-wrap
+            gap-7
+            md:gap-10
+            mb-10
+            border-b
+            border-white/10
+            reveal
+          "
+        >
+
+          <button
+            class="filter-button active"
+            data-filter="all"
+          >
+            ALL
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="motion"
+          >
+            MOTION
+          </button>
+
+          <!--  <button
+            class="filter-button"
+            data-filter="video"
+          >
+            VIDEO
+          </button> -->
+
+          <button
+            class="filter-button"
+            data-filter="graphic"
+          >
+            GRAPHIC
+          </button>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             作品網格 / PROJECT GRID
+
+             手機：1 欄 / Mobile: 1 columns
+             平板：3 欄 / Tablet: 3 columns
+             桌面：4 欄 / Desktop: 4 columns
+             大螢幕：5 欄 / Large desktop: 5 columns
+        ==================================================== -->
+
+        <div
+          id="projectGrid"
+          class="
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            lg:grid-cols-4
+            xl:grid-cols-5
+            gap-4
+            md:gap-5
+          "
+        >
+
+
+
+          <!-- =================================================
+               作品 01：動畫 / PROJECT 01: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="PV / AMV"
+              data-description="動畫音樂影片，以節奏、分鏡畫面、色彩與影像敘事建立完整的短篇視覺體驗。"
+              data-tools="ComfyUI · Minimax H3"
+              data-image="assets/images/project_01_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1SicmxUT-q-FCC3FEsU_fGH6gLRgrMgPS/view?usp=drive_link"
+              data-aspect="16 / 9"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_01_thumb.jpg"
+                  alt="PV project"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <!-- 影片 Play Icon / Video Play Icon -->
+
+                <div
+                  class="
+                    project-type-icon
+                    video-icon
+                  "
+                >
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                    items-start
+                  "
+                >
+
+                  <h3 class="project-title">
+                    PV / AMV
+                  </h3>
+
+                  <span class="project-number">
+                    01
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · AI
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 02：平面 / PROJECT 02: GRAPHIC
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="graphic"
+          >
+
+            <div
+              class="project-card"
+              data-type="image"
+              data-title="Design"
+              data-description="靈感取自雨後森林與研開的墨。黑茶的深沉、苔蘚的濕潤與雪松的安定，在火光中緩慢展開，為忙碌的日常留下一段不被打擾的時間。"
+              data-tools="ComfyUI · Photoshop · AI"
+              data-image="assets/images/project_02_large.jpg"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_02_thumb.jpg"
+                  alt="Design"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <!-- 平面作品箭頭 / Graphic Project Arrow -->
+
+                <div class="project-type-icon">
+                  <span class="arrow-symbol">
+                    ↗
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                    items-start
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Design
+                  </h3>
+
+                  <span class="project-number">
+                    02
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                    Compositing · Creative · AI
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 03：AI Visual / PROJECT 03: AI VISUAL
+               AI 圖像歸類在 Graphic / AI image belongs to Graphic
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="graphic"
+          >
+
+            <div
+              class="project-card"
+              data-type="image"
+              data-title="Design"
+              data-description="文案概念是把「淡墨」表現為晨光、留白與安靜的氣味，與深色款「沉墨」形成一明一暗的系列對比。"
+              data-tools="ComfyUI · Photoshop · AI"
+              data-image="assets/images/project_03_large.jpg"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_03_thumb.jpg"
+                  alt="Design"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="arrow-symbol">
+                    ↗
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Design
+                  </h3>
+
+                  <span class="project-number">
+                    03
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                   Compositing · Creative · AI
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 04：動畫 / PROJECT 04: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="雅典娜，respin重滾。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_04_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1ZAZi9-B6h70uokntMbUuriQ4h_HSRzbl/view?usp=drive_link"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                 src="assets/images/project_04_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    04
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 05：動畫 / PROJECT 05: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="聖光使者 S1 - WILD，桌機版在影片播放時，可以在影片上按右鍵設定循環播放。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_05_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1yq1Rr8KkYfyYyrOC0gQ6CrUVCaX-1I0O/view?usp=drive_link"
+              data-aspect="16 / 9"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                 src="assets/images/project_05_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    05
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 06：動畫 / PROJECT 06: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="財神，桌機版在影片播放時，可以在影片上按右鍵設定循環播放。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_06_thumb.jpg"
+              data-video="https://drive.google.com/file/d/15VqhYg8e5WFxPs7-sR8dyy5cuymbqudV/view?usp=drive_link"
+              data-video-label="中獎"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_06_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    06
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+              <!-- 複製這一段可持續新增影片按鈕 / Copy to add another video button -->
+              <span
+                class="project-video-source"
+                hidden
+                data-label="延展"
+                data-url="https://drive.google.com/file/d/1qp6HrKDQdyCtzGF5ZQ8aHrUpgy6JwbBP/view?usp=drive_link"
+              ></span>
+
+              <span
+                class="project-video-source"
+                hidden
+                data-label="BONUS"
+                data-url="https://drive.google.com/file/d/1up5Yrl1norgF17IOXJltPF04RcXAEYti/view?usp=drive_link"
+              ></span>
+
+              <span
+                class="project-video-source"
+                hidden
+                data-label="WILD"
+                data-url="https://drive.google.com/file/d/1_kyg4lboFR_NZVacaE7U4y1ECLeKN9Ly/view?usp=drive_link"
+              ></span>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 07：動畫 / PROJECT 07: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="火焰金字塔，桌機版在影片播放時，可以在影片上按右鍵設定循環播放。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_07_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1TtA8UMcJg5-7cXZg_VzkMoWMTHAP_2OR/view?usp=drive_link"
+              data-video-label="總計"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_07_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    07
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+              <!-- 複製這一段可持續新增影片按鈕 / Copy to add another video button -->
+              <span
+                class="project-video-source"
+                hidden
+                data-label="報獎"
+                data-url="https://drive.google.com/file/d/1UfV93h-L9Igv-Y9RDombD5yfay1gFQaP/view?usp=drive_link"
+              ></span>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 08：動畫 / PROJECT 08: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="野牛，桌機版在影片播放時，可以在影片上按右鍵設定循環播放。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_08_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1ERYkZyJrq_nOCEtDad5Wi1Jg58iHpXMe/view?usp=drive_link"
+              data-video-label="MG"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_08_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    08
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+              <!-- 複製這一段可持續新增影片按鈕 / Copy to add another video button -->
+              <span
+                class="project-video-source"
+                hidden
+                data-label="FG"
+                data-url="https://drive.google.com/file/d/1mqS3NMk8cKfbi-gTzA-yqw4TgT7jg-RR/view?usp=drive_link"
+              ></span>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 09：影片 / PROJECT 09: VIDEO
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Commercial Reel"
+              data-description="商業型影音與廣告剪輯，強調產品特寫與視覺張力。"
+              data-tools="ComfyUI · Minimax H3 · After Effects"
+              data-image="assets/images/project_09_thumb.jpg"
+              data-video="https://drive.google.com/file/d/10Ijh2yLWYk3byQXj4xBxSBS3RDihcVI0/view?usp=drive_link"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_09_thumb.jpg"
+                  alt="Commercial Reel"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Commercial Reel
+                  </h3>
+
+                  <span class="project-number">
+                    09
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Commercial · Editing · AI
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- =================================================
+               作品 10：平面 / PROJECT 10: GRAPHIC
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="graphic"
+          >
+
+            <div
+              class="project-card"
+              data-type="image"
+              data-title="Commercial Design"
+              data-description="結合 AI、影像素材與 Photoshop 後製所完成的視覺實驗。"
+              data-tools="ComfyUI · Photoshop"
+              data-image="assets/images/project_10_large.jpg"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                  src="assets/images/project_10_thumb.jpg"
+                  alt="Commercial Design"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="arrow-symbol">
+                    ↗
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Commercial Design
+                  </h3>
+
+                  <span class="project-number">
+                    10
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                   Compositing · Creative · AI
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+          <!-- =================================================
+               作品 11：動畫 / PROJECT 11: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="公版報獎 -3階大獎。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_11_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1NPNEYbqGwuaWraIFmODfm_emFE1jjVgR/view?usp=drive_link"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                 src="assets/images/project_11_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    11
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+          <!-- =================================================
+               作品 12：動畫 / PROJECT 12: MOTION
+          ================================================== -->
+
+          <article
+            class="
+              project-item
+              reveal
+            "
+            data-category="motion"
+          >
+
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="Slots Game"
+              data-description="武俠- WILD，桌機版在影片播放時，可以在影片上按右鍵設定循環播放。"
+              data-tools="Spine 2D · After Effects · Photoshop"
+              data-image="assets/images/project_12_thumb.jpg"
+              data-video="https://drive.google.com/file/d/1fwtm1GJ1bLVIiS4WPtaVyP3S_O-DlBFr/view?usp=drive_link"
+              data-aspect="9 / 16"
+            >
+
+              <div class="project-media">
+
+                <img
+                  class="project-image"
+                 src="assets/images/project_12_thumb.jpg"
+                  alt="Slots Game"
+                  loading="lazy"
+                />
+
+                <div class="project-shade"></div>
+
+                <div class="project-type-icon">
+                  <span class="play-symbol"></span>
+                </div>
+
+              </div>
+
+
+              <div class="project-info">
+
+                <div
+                  class="
+                    flex
+                    justify-between
+                    gap-3
+                  "
+                >
+
+                  <h3 class="project-title">
+                    Slots Game
+                  </h3>
+
+                  <span class="project-number">
+                    12
+                  </span>
+
+                </div>
+
+                <p class="project-description">
+                  Animation · Motion · VFX
+                </p>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         履歷 / RESUME
+    ======================================================== -->
+
+    <!-- RESUME section temporarily hidden
+    <section
+      id="resume"
+      class="
+        py-32
+        lg:py-44
+      "
+    >
+
+      <div
+        class="
+          max-w-7xl
+          mx-auto
+          px-6
+          lg:px-10
+        "
+      >
+
+        <div
+          class="
+            grid
+            lg:grid-cols-12
+            gap-16
+          "
+        >
+
+          <div
+            class="
+              lg:col-span-4
+              reveal
+            "
+          >
+
+            <p class="section-label">
+              RESUME
+            </p>
+
+            <h2
+              class="
+                section-title
+                text-5xl
+                md:text-7xl
+                font-black
+                mt-5
+              "
+            >
+              EXPERIENCE<span class="text-accent">.</span>
+            </h2>
+
+          </div>
+
+
+          <div
+            class="
+              lg:col-span-8
+              relative
+              reveal
+            "
+          >
+
+            <div class="timeline-line"></div>
+
+
+            <div
+              class="
+                relative
+                pl-12
+                pb-14
+              "
+            >
+
+              <div
+                class="
+                  timeline-dot
+                  absolute
+                  left-0
+                  top-0
+                "
+              ></div>
+
+              <p
+                class="
+                  text-accent
+                  text-sm
+                  font-bold
+                "
+              >
+                2024 — PRESENT
+              </p>
+
+              <h3
+                class="
+                  text-2xl
+                  font-bold
+                  mt-2
+                "
+              >
+                Creative / Visual Design
+              </h3>
+
+              <p
+                class="
+                  text-white/40
+                  mt-3
+                  leading-relaxed
+                "
+              >
+                Motion design、graphic design、
+                AI visual creation 與影像相關創作。
+              </p>
+
+            </div>
+
+
+            <div
+              class="
+                relative
+                pl-12
+                pb-14
+              "
+            >
+
+              <div
+                class="
+                  timeline-dot
+                  absolute
+                  left-0
+                  top-0
+                "
+              ></div>
+
+              <p
+                class="
+                  text-accent
+                  text-sm
+                  font-bold
+                "
+              >
+                2021 — 2024
+              </p>
+
+              <h3
+                class="
+                  text-2xl
+                  font-bold
+                  mt-2
+                "
+              >
+                Visual Designer
+              </h3>
+
+              <p
+                class="
+                  text-white/40
+                  mt-3
+                  leading-relaxed
+                "
+              >
+                參與視覺設計、社群素材、
+                廣告素材與數位內容製作。
+              </p>
+
+            </div>
+
+
+            <div
+              class="
+                relative
+                pl-12
+              "
+            >
+
+              <div
+                class="
+                  timeline-dot
+                  absolute
+                  left-0
+                  top-0
+                "
+              ></div>
+
+              <p
+                class="
+                  text-accent
+                  text-sm
+                  font-bold
+                "
+              >
+                EDUCATION
+              </p>
+
+              <h3
+                class="
+                  text-2xl
+                  font-bold
+                  mt-2
+                "
+              >
+                Design / Visual Communication
+              </h3>
+
+              <p
+                class="
+                  text-white/40
+                  mt-3
+                  leading-relaxed
+                "
+              >
+                視覺設計、影像處理、
+                動態影像與數位創作。
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+    -->
+
+    <!-- =======================================================
+         聯絡 / CONTACT
+    ======================================================== -->
+
+    <section
+      id="contact"
+      class="
+        py-20
+        lg:py-28
+      "
+    >
+
+      <div
+        class="
+          max-w-7xl
+          mx-auto
+          px-6
+          lg:px-10
+        "
+      >
+
+        <div class="reveal">
+
+          <p class="section-label">
+            CONTACT
+          </p>
+
+          <h2
+            class="
+              section-title
+              text-[15vw]
+              lg:text-[9rem]
+              font-black
+              leading-none
+              mt-5
+            "
+          >
+            LET'S
+
+            <br />
+
+            <span class="text-accent">
+              CREATE.
+            </span>
+
+          </h2>
+
+          <p
+            class="
+              text-white/45
+              max-w-xl
+              text-lg
+              mt-10
+              leading-relaxed
+            "
+          >
+            如果你對我的作品有興趣，
+            歡迎與我聯絡。
+          </p>
+
+          <a
+            href="mailto:kate.lee0516@gmail.com"
+            class="
+              inline-flex
+              items-center
+              gap-4
+              mt-10
+              text-xl
+              md:text-2xl
+              border-b
+              border-accent
+              pb-2
+              hover:text-accent
+              transition
+            "
+          >
+            kate.lee0516@gmail.com
+
+            <span>
+              ↗
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =======================================================
+       頁尾 / FOOTER
+  ======================================================== -->
+
+  <footer
+    class="
+      border-t
+      border-white/10
+    "
+  >
+
+    <div
+      class="
+        max-w-7xl
+        mx-auto
+        px-6
+        lg:px-10
+        py-10
+      "
+    >
+
+      <div
+        class="
+          flex
+          flex-col
+          md:flex-row
+          justify-between
+          gap-6
+        "
+      >
+
+        <div>
+
+          <div
+            class="
+              text-xl
+              font-black
+            "
+          >
+            KATE<span class="text-accent">.</span> LI
+          </div>
+
+          <p
+            class="
+              text-sm
+              text-white/30
+              mt-2
+            "
+          >
+            Creative Designer · Motion · AI Visual
+          </p>
+
+        </div>
+
+        <div
+          class="
+            text-sm
+            text-white/30
+          "
+        >
+          © 2026 KATE. All rights reserved.
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =======================================================
+       作品放大彈窗 / PROJECT LIGHTBOX
+  ======================================================== -->
+
+  <div
+    id="projectModal"
+    aria-hidden="true"
+  >
+
+    <!-- 關閉按鈕 / Close Button -->
+
+    <button
+      id="modalClose"
+      class="modal-close"
+      aria-label="Close project"
+    >
+      ×
+    </button>
+
+    <button
+      id="modalPrev"
+      class="modal-nav modal-prev"
+      aria-label="Previous project"
+    >
+      ←
+    </button>
+
+    <button
+      id="modalNext"
+      class="modal-nav modal-next"
+      aria-label="Next project"
+    >
+      →
+    </button>
+
+
+    <div
+      class="
+        modal-container
+        grid
+        lg:grid-cols-[minmax(0,1fr)_360px]
+      "
+    >
+
+      <!-- 作品媒體 / Project Media -->
+
+      <div
+        id="modalMedia"
+        class="modal-media"
+      >
+      </div>
+
+
+      <!-- 作品資訊 / Project Information -->
+
+      <div
+        class="
+          p-7
+          md:p-10
+          lg:p-9
+          flex
+          flex-col
+          justify-between
+        "
+      >
+
+        <div>
+
+          <p
+            class="
+              section-label
+              mb-5
+            "
+          >
+            SELECTED WORK
+          </p>
+
+          <h3
+            id="modalTitle"
+            class="
+              text-3xl
+              md:text-4xl
+              font-black
+              tracking-tight
+            "
+          >
+          </h3>
+
+          <p
+            id="modalDescription"
+            class="
+              text-white/50
+              leading-relaxed
+              mt-6
+            "
+          >
+          </p>
+
+          <div
+            id="modalVideoTabs"
+            class="modal-video-tabs"
+            aria-label="影片選擇"
+          >
+          </div>
+
+        </div>
+
+
+        <div
+          class="
+            mt-12
+            pt-6
+            border-t
+            border-white/10
+          "
+        >
+
+          <p
+            class="
+              text-[11px]
+              text-white/25
+              tracking-[.18em]
+              mb-3
+            "
+          >
+            TOOLS / SOFTWARE
+          </p>
+
+          <p
+            id="modalTools"
+            class="
+              text-sm
+              text-white/60
+            "
+          >
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =======================================================
+       JavaScript
+  ======================================================== -->
+
+  <script>
+
+
+    /* =========================================================
+       首頁圖片輪播 / HERO SLIDER
+    ========================================================= */
+
+    const slides =
+      document.querySelectorAll(".hero-image");
+
+    const dots =
+      document.querySelectorAll(".slide-dot");
+
+    const slideTitle =
+      document.getElementById("slideTitle");
+
+    const slideCounter =
+      document.getElementById("slideCounter");
+
+
+    const slideTitles = [
+      /* "AI VISUAL",
+      "MOTION DESIGN",
+      "DIGITAL ART" */
+    ];
+
+
+    let currentSlide = 0;
+
+    let sliderTimer;
+
+
+    function showSlide(index) {
+
+      slides.forEach((slide, i) => {
+
+        slide.classList.toggle(
+          "active",
+          i === index
+        );
+
+        slide.classList.toggle(
+          "inactive",
+          i !== index
+        );
+
+      });
+
+
+      dots.forEach((dot, i) => {
+
+        if (i === index) {
+
+          dot.classList.remove(
+            "bg-white/20"
+          );
+
+          dot.classList.add(
+            "bg-accent"
+          );
+
+        }
+
+        else {
+
+          dot.classList.remove(
+            "bg-accent"
+          );
+
+          dot.classList.add(
+            "bg-white/20"
+          );
+
+        }
+
+      });
+
+
+      slideTitle.textContent =
+        slideTitles[index];
+
+
+      slideCounter.textContent =
+        String(index + 1).padStart(2, "0") +
+        " / " +
+        String(slides.length).padStart(2, "0");
+
+
+      currentSlide =
+        index;
+
+    }
+
+
+    function nextSlide() {
+
+      const next =
+        (currentSlide + 1) %
+        slides.length;
+
+      showSlide(next);
+
+    }
+
+
+    function startSlider() {
+
+      clearInterval(
+        sliderTimer
+      );
+
+      sliderTimer =
+        setInterval(
+          nextSlide,
+          4500
+        );
+
+    }
+
+
+    dots.forEach((dot) => {
+
+      dot.addEventListener(
+        "click",
+        () => {
+
+          const index =
+            Number(
+              dot.dataset.slide
+            );
+
+          showSlide(index);
+
+          startSlider();
+
+        }
+      );
+
+    });
+
+
+    showSlide(0);
+
+    startSlider();
+
+
+
+    /* =========================================================
+       手機版選單 / MOBILE MENU
+    ========================================================= */
+
+    const menuButton =
+      document.getElementById(
+        "menuButton"
+      );
+
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+
+    menuButton.addEventListener(
+      "click",
+      () => {
+
+        mobileMenu.classList.toggle(
+          "hidden-menu"
+        );
+
+      }
+    );
+
+
+    document
+      .querySelectorAll(".mobile-link")
+      .forEach((link) => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mobileMenu.classList.add(
+              "hidden-menu"
+            );
+
+          }
+        );
+
+      });
+
+
+
+    /* =========================================================
+       滾動進場動畫 / SCROLL REVEAL
+    ========================================================= */
+
+    const revealElements =
+      document.querySelectorAll(
+        ".reveal"
+      );
+
+
+    const revealObserver =
+      new IntersectionObserver(
+
+        (entries) => {
+
+          entries.forEach(
+            (entry) => {
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                entry.target
+                  .classList
+                  .add(
+                    "visible"
+                  );
+
+                revealObserver
+                  .unobserve(
+                    entry.target
+                  );
+
+              }
+
+            }
+          );
+
+        },
+
+        {
+          threshold: 0.12
+        }
+
+      );
+
+
+    revealElements.forEach(
+      (element) => {
+
+        revealObserver.observe(
+          element
+        );
+
+      }
+    );
+
+
+
+    /* =========================================================
+       自訂游標 / CUSTOM CURSOR
+    ========================================================= */
+
+    const cursorDot =
+      document.getElementById(
+        "cursorDot"
+      );
+
+
+    document.addEventListener(
+      "mousemove",
+      (event) => {
+
+        cursorDot.style.left =
+          event.clientX +
+          "px";
+
+        cursorDot.style.top =
+          event.clientY +
+          "px";
+
+      }
+    );
+
+    function hideCursorOverEmbeddedVideo(frame) {
+      frame.addEventListener(
+        "mouseenter",
+        () => cursorDot.classList.add("is-hidden")
+      );
+
+      frame.addEventListener(
+        "mouseleave",
+        () => cursorDot.classList.remove("is-hidden")
+      );
+    }
+
+
+
+    /* =========================================================
+       Hero 光影視差 / HERO PARALLAX
+    ========================================================= */
+
+    const heroGlow =
+      document.querySelector(
+        ".hero-glow"
+      );
+
+
+    window.addEventListener(
+      "mousemove",
+      (event) => {
+
+        if (
+          window.innerWidth < 768
+        ) return;
+
+
+        const x =
+          (
+            event.clientX /
+            window.innerWidth -
+            0.5
+          ) * 30;
+
+
+        const y =
+          (
+            event.clientY /
+            window.innerHeight -
+            0.5
+          ) * 30;
+
+
+        heroGlow.style.transform =
+          `translate(${x}px, ${y}px)`;
+
+      }
+    );
+
+
+
+    /* =========================================================
+       導覽列目前區塊 / ACTIVE NAVIGATION
+    ========================================================= */
+
+    const sections =
+      document.querySelectorAll(
+        "section[id]"
+      );
+
+    const navLinks =
+      document.querySelectorAll(
+        ".nav-link"
+      );
+
+
+    const navObserver =
+      new IntersectionObserver(
+
+        (entries) => {
+
+          entries.forEach(
+            (entry) => {
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                navLinks.forEach(
+                  (link) => {
+
+                    link.classList.remove(
+                      "text-white"
+                    );
+
+
+                    if (
+                      link.getAttribute(
+                        "href"
+                      ) ===
+                      "#" +
+                      entry.target.id
+                    ) {
+
+                      link.classList.add(
+                        "text-white"
+                      );
+
+                    }
+
+                  }
+                );
+
+              }
+
+            }
+          );
+
+        },
+
+        {
+          rootMargin:
+            "-40% 0px -50% 0px"
+        }
+
+      );
+
+
+    sections.forEach(
+      (section) => {
+
+        navObserver.observe(
+          section
+        );
+
+      }
+    );
+
+
+
+    /* =========================================================
+       作品分類系統 / WORK FILTER SYSTEM
+    ========================================================= */
+
+    const filterButtons =
+      document.querySelectorAll(
+        ".filter-button"
+      );
+
+    const projectItems =
+      document.querySelectorAll(
+        ".project-item"
+      );
+
+
+    filterButtons.forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+
+            /* 更新目前按鈕 / Update Active Button */
+
+            filterButtons.forEach(
+              (item) => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            const filter =
+              button.dataset.filter;
+
+
+            /* 篩選作品 / Filter Projects */
+
+            projectItems.forEach(
+              (item, index) => {
+
+                const category =
+                  item.dataset.category;
+
+
+                const shouldShow =
+                  filter === "all" ||
+                  category === filter;
+
+
+                if (shouldShow) {
+
+                  item.classList.remove(
+                    "filter-hidden"
+                  );
+
+
+                  item.classList.remove(
+                    "filter-show"
+                  );
+
+
+                  /* 重新觸發動畫 / Restart Animation */
+
+                  void item.offsetWidth;
+
+
+                  item.style.animationDelay =
+                    `${index * 0.025}s`;
+
+
+                  item.classList.add(
+                    "filter-show"
+                  );
+
+                }
+
+                else {
+
+                  item.classList.add(
+                    "filter-hidden"
+                  );
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+
+    /* =========================================================
+       作品放大彈窗 / PROJECT LIGHTBOX
+    ========================================================= */
+
+    const projectModal =
+      document.getElementById(
+        "projectModal"
+      );
+
+    const modalClose =
+      document.getElementById(
+        "modalClose"
+      );
+
+    const modalPrev = document.getElementById("modalPrev");
+    const modalNext = document.getElementById("modalNext");
+
+    const modalMedia =
+      document.getElementById(
+        "modalMedia"
+      );
+
+    const modalTitle =
+      document.getElementById(
+        "modalTitle"
+      );
+
+    const modalDescription =
+      document.getElementById(
+        "modalDescription"
+      );
+
+    const modalTools =
+      document.getElementById(
+        "modalTools"
+      );
+
+    const modalVideoTabs =
+      document.getElementById(
+        "modalVideoTabs"
+      );
+
+
+    const projectCards =
+      document.querySelectorAll(
+        ".project-card"
+      );
+
+    let currentProjectCard = null;
+
+    function getVisibleProjectCards() {
+      return Array.from(projectCards).filter(
+        (card) => !card.closest(".project-item").classList.contains("filter-hidden")
+      );
+    }
+
+    function updateModalNavigation() {
+      const canNavigate = getVisibleProjectCards().length > 1;
+
+      modalPrev.disabled = !canNavigate;
+      modalNext.disabled = !canNavigate;
+    }
+
+    function switchProject(direction) {
+      const visibleCards = getVisibleProjectCards();
+      const currentIndex = visibleCards.indexOf(currentProjectCard);
+
+      if (visibleCards.length < 2 || currentIndex === -1) return;
+
+      const nextIndex =
+        (currentIndex + direction + visibleCards.length) % visibleCards.length;
+
+      openProject(visibleCards[nextIndex]);
+    }
+
+
+    /*
+      將 YouTube 一般網址、Shorts 網址轉為影片 ID
+      Convert YouTube watch and Shorts URLs to a video ID
+    */
+    function getYouTubeId(url) {
+      try {
+        const parsedUrl = new URL(url);
+        const hostname = parsedUrl.hostname.replace("www.", "");
+
+        if (hostname === "youtu.be") {
+          return parsedUrl.pathname.split("/").filter(Boolean)[0] || "";
+        }
+
+        if (
+          hostname === "youtube.com" ||
+          hostname === "m.youtube.com"
+        ) {
+          if (parsedUrl.pathname === "/watch") {
+            return parsedUrl.searchParams.get("v") || "";
+          }
+
+          const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+
+          if (["shorts", "embed", "live"].includes(pathParts[0])) {
+            return pathParts[1] || "";
+          }
+        }
+      } catch (error) {
+        return "";
+      }
+
+      return "";
+    }
+
+
+    /*
+      讀取 Google Drive 分享網址中的檔案 ID
+      Read the file ID from a Google Drive share URL
+    */
+    function getGoogleDriveFileId(url) {
+      try {
+        const parsedUrl = new URL(url);
+        const hostname = parsedUrl.hostname.replace("www.", "");
+
+        if (hostname !== "drive.google.com") {
+          return "";
+        }
+
+        const pathMatch = parsedUrl.pathname.match(
+          /\/file\/d\/([^/]+)/
+        );
+
+        return pathMatch
+          ? pathMatch[1]
+          : parsedUrl.searchParams.get("id") || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+
+    function renderProjectVideo(video, title, image, aspect) {
+      modalMedia.innerHTML = "";
+
+      const youtubeId = getYouTubeId(video);
+      const googleDriveFileId = getGoogleDriveFileId(video);
+
+      if (youtubeId) {
+        const iframe = document.createElement("iframe");
+        const playerUrl = new URL(
+          `https://www.youtube.com/embed/${youtubeId}`
+        );
+
+        playerUrl.searchParams.set("autoplay", "1");
+        playerUrl.searchParams.set("rel", "0");
+
+        if (
+          window.location.protocol === "https:" ||
+          window.location.protocol === "http:"
+        ) {
+          playerUrl.searchParams.set("origin", window.location.origin);
+        }
+
+        iframe.src = playerUrl.toString();
+        iframe.title = `${title} YouTube video`;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.style.aspectRatio = aspect;
+
+        if (aspect === "9 / 16") {
+          iframe.classList.add("is-portrait");
+        }
+
+        hideCursorOverEmbeddedVideo(iframe);
+        modalMedia.appendChild(iframe);
+        return;
+      }
+
+      if (googleDriveFileId) {
+        const iframe = document.createElement("iframe");
+
+        iframe.src = `https://drive.google.com/file/d/${googleDriveFileId}/preview`;
+        iframe.title = `${title} video`;
+        iframe.allow = "autoplay; fullscreen";
+        iframe.allowFullscreen = true;
+        iframe.style.aspectRatio = aspect;
+
+        if (aspect === "9 / 16") {
+          iframe.classList.add("is-portrait");
+        }
+
+        hideCursorOverEmbeddedVideo(iframe);
+        modalMedia.appendChild(iframe);
+        return;
+      }
+
+      const videoElement = document.createElement("video");
+
+      videoElement.src = video;
+      videoElement.controls = true;
+      videoElement.autoplay = true;
+      videoElement.playsInline = true;
+      videoElement.poster = image;
+
+      modalMedia.appendChild(videoElement);
+    }
+
+
+    /* 開啟作品 / Open Project */
+
+    function openProject(card) {
+
+      currentProjectCard = card;
+      updateModalNavigation();
+
+      const type =
+        card.dataset.type;
+
+      const title =
+        card.dataset.title || "";
+
+      const description =
+        card.dataset.description || "";
+
+      const tools =
+        card.dataset.tools || "";
+
+      const image =
+        card.dataset.image || "";
+
+      const video =
+        card.dataset.video || "";
+
+      const aspect =
+        card.dataset.aspect || "16 / 9";
+
+
+      modalTitle.textContent =
+        title;
+
+      modalDescription.textContent =
+        description;
+
+      modalTools.textContent =
+        tools;
+
+
+      /*
+        先清除上一個作品
+        Clear previous project
+      */
+
+      modalMedia.innerHTML = "";
+      modalVideoTabs.innerHTML = "";
+      modalVideoTabs.classList.remove("is-visible");
+      cursorDot.classList.remove("is-hidden");
+
+
+      /*
+        如果是影片作品
+        If project is video
+      */
+
+      if (
+        type === "video" &&
+        video
+      ) {
+        const videoOptions = [
+          { url: video, label: card.dataset.videoLabel || "影片 1" },
+          ...Array.from(
+            card.querySelectorAll(".project-video-source")
+          ).map((source) => ({
+            url: source.dataset.url,
+            label: source.dataset.label || "其他影片",
+          })),
+        ].filter((option) => option.url);
+
+        renderProjectVideo(videoOptions[0].url, title, image, aspect);
+
+        if (videoOptions.length > 1) {
+          modalVideoTabs.classList.add("is-visible");
+
+          videoOptions.forEach((option, index) => {
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.className = "modal-video-tab";
+            button.textContent = option.label;
+
+            if (index === 0) {
+              button.classList.add("active");
+            }
+
+            button.addEventListener("click", () => {
+              modalVideoTabs
+                .querySelectorAll(".modal-video-tab")
+                .forEach((tab) => tab.classList.remove("active"));
+
+              button.classList.add("active");
+              renderProjectVideo(option.url, title, image, aspect);
+            });
+
+            modalVideoTabs.appendChild(button);
+          });
+        }
+
+      }
+
+      /*
+        如果是圖片作品
+        If project is image
+      */
+
+      else {
+
+        const imageElement =
+          document.createElement(
+            "img"
+          );
+
+
+        imageElement.src =
+          image;
+
+        imageElement.alt =
+          title;
+
+
+        modalMedia.appendChild(
+          imageElement
+        );
+
+      }
+
+
+      /*
+        顯示彈窗
+        Show Modal
+      */
+
+      projectModal.classList.add(
+        "active"
+      );
+
+
+      projectModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      /*
+        彈窗開啟時禁止背景捲動
+        Disable page scrolling while modal is open
+      */
+
+      document.body.style.overflow =
+        "hidden";
+
+    }
+
+
+
+    /* 關閉作品 / Close Project */
+
+    function closeProject() {
+
+      cursorDot.classList.remove("is-hidden");
+
+      projectModal.classList.remove(
+        "active"
+      );
+
+
+      projectModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body.style.overflow =
+        "";
+
+
+      /*
+        停止影片播放
+        Stop video playback
+      */
+
+      const video = modalMedia.querySelector("video");
+
+
+      if (video) {
+
+        video.pause();
+
+      }
+
+
+      /*
+        延遲清除避免關閉動畫閃爍
+        Delay clearing content for smooth animation
+      */
+
+      setTimeout(
+        () => {
+
+          if (
+            !projectModal.classList.contains(
+              "active"
+            )
+          ) {
+
+            modalMedia.innerHTML =
+              "";
+
+            modalVideoTabs.innerHTML = "";
+            modalVideoTabs.classList.remove("is-visible");
+
+          }
+
+        },
+        350
+      );
+
+    }
+
+
+
+    /* 卡片點擊事件 / Card Click Event */
+
+    projectCards.forEach(
+      (card) => {
+
+        card.addEventListener(
+          "click",
+          () => {
+
+            openProject(
+              card
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+
+    /* 關閉按鈕 / Close Button */
+
+    modalClose.addEventListener(
+      "click",
+      closeProject
+    );
+
+    modalPrev.addEventListener("click", () => switchProject(-1));
+    modalNext.addEventListener("click", () => switchProject(1));
+
+
+
+    /*
+      點擊黑色背景關閉
+      Close when clicking outside modal
+    */
+
+    projectModal.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target ===
+          projectModal
+        ) {
+
+          closeProject();
+
+        }
+
+      }
+    );
+
+
+
+    /*
+      ESC 鍵關閉
+      Close modal with ESC
+    */
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (!projectModal.classList.contains("active")) return;
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeProject();
+
+        }
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          switchProject(-1);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          switchProject(1);
+        }
+
+      }
+    );
+
+
+  </script>
+
+</body>
+</html>
