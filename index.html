@@ -1057,6 +1057,10 @@
       .modal-prev { left: 12px; }
       .modal-next { right: 12px; }
 
+      .modal-nav {
+        display: none;
+      }
+
       .modal-close {
         top: 15px;
         right: 15px;
@@ -1064,66 +1068,6 @@
 
       .modal-media {
         min-height: 0;
-      }
-
-      .modal-container {
-        width: 100%;
-
-        max-height: calc(100dvh - 24px);
-      }
-
-      .modal-media iframe {
-        min-height: 180px;
-
-        max-height: 58dvh;
-      }
-
-      .modal-media iframe.is-portrait {
-        height: min(58dvh, 680px);
-      }
-
-      #projectModal.mobile-fullscreen {
-        padding: 0;
-      }
-
-      #projectModal.mobile-fullscreen .modal-container {
-        width: 100vw;
-
-        height: 100dvh;
-
-        max-height: none;
-
-        overflow: hidden;
-
-        border: 0;
-
-        display: block;
-      }
-
-      #projectModal.mobile-fullscreen .modal-media {
-        width: 100%;
-
-        height: 100%;
-
-        background: #000;
-      }
-
-      #projectModal.mobile-fullscreen .modal-media iframe,
-      #projectModal.mobile-fullscreen .modal-media iframe.is-portrait,
-      #projectModal.mobile-fullscreen .modal-media video {
-        width: 100%;
-
-        height: 100%;
-
-        max-height: none;
-
-        margin: 0;
-
-        aspect-ratio: auto;
-      }
-
-      #projectModal.mobile-fullscreen .modal-media + div {
-        display: none;
       }
 
     }
@@ -4143,58 +4087,6 @@
     }
 
 
-    function useMobilePlaybackMode() {
-      return window.matchMedia(
-        "(max-width: 768px) and (pointer: coarse)"
-      ).matches;
-    }
-
-
-    function enterMobilePlaybackMode() {
-      if (!useMobilePlaybackMode()) {
-        projectModal.classList.remove("mobile-fullscreen");
-        return;
-      }
-
-      projectModal.classList.add("mobile-fullscreen");
-
-      const requestFullscreen =
-        projectModal.requestFullscreen ||
-        projectModal.webkitRequestFullscreen;
-
-      if (
-        requestFullscreen &&
-        !document.fullscreenElement &&
-        !document.webkitFullscreenElement
-      ) {
-        const result = requestFullscreen.call(projectModal);
-
-        if (result && typeof result.catch === "function") {
-          result.catch(() => {
-            /* 部分手機瀏覽器不允許元素全螢幕，保留全視窗播放模式。 */
-          });
-        }
-      }
-    }
-
-
-    function exitMobilePlaybackMode() {
-      projectModal.classList.remove("mobile-fullscreen");
-
-      if (
-        document.fullscreenElement === projectModal ||
-        document.webkitFullscreenElement === projectModal
-      ) {
-        const exitFullscreen =
-          document.exitFullscreen ||
-          document.webkitExitFullscreen;
-
-        if (exitFullscreen) {
-          exitFullscreen.call(document);
-        }
-      }
-    }
-
 
     /*
       將 YouTube 一般網址、Shorts 網址轉為影片 ID
@@ -4468,12 +4360,6 @@
         "false"
       );
 
-      if (type === "video" && video) {
-        enterMobilePlaybackMode();
-      } else {
-        exitMobilePlaybackMode();
-      }
-
 
       /*
         彈窗開啟時禁止背景捲動
@@ -4492,7 +4378,6 @@
     function closeProject() {
 
       cursorDot.classList.remove("is-hidden");
-      exitMobilePlaybackMode();
 
       projectModal.classList.remove(
         "active"
@@ -4561,6 +4446,20 @@
         card.addEventListener(
           "click",
           () => {
+
+            const videoUrl = card.dataset.video;
+
+            /*
+              手機直接交給 Google Drive 播放，避免內嵌播放器裁切
+              On phones, open Drive itself instead of its embedded player
+            */
+            if (
+              window.matchMedia("(max-width: 768px)").matches &&
+              getGoogleDriveFileId(videoUrl)
+            ) {
+              window.location.href = videoUrl;
+              return;
+            }
 
             openProject(
               card
@@ -4641,11 +4540,6 @@
       }
     );
 
-    document.addEventListener("fullscreenchange", () => {
-      if (!document.fullscreenElement) {
-        projectModal.classList.remove("mobile-fullscreen");
-      }
-    });
 
 
   </script>
