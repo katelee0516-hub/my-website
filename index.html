@@ -4200,20 +4200,40 @@
       }
 
       if (googleDriveFileId) {
-        const iframe = document.createElement("iframe");
+        const isIOS =
+          /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-        iframe.src = `https://drive.google.com/file/d/${googleDriveFileId}/preview`;
-        iframe.title = `${title} video`;
-        iframe.allow = "autoplay; fullscreen";
-        iframe.allowFullscreen = true;
-        iframe.style.aspectRatio = aspect;
+        if (isIOS) {
+          const videoElement = document.createElement("video");
 
-        if (aspect === "9 / 16") {
-          iframe.classList.add("is-portrait");
+          videoElement.src =
+            `https://drive.usercontent.google.com/download?id=${googleDriveFileId}&export=download&confirm=t`;
+          videoElement.controls = true;
+          videoElement.autoplay = true;
+          videoElement.playsInline = true;
+          videoElement.setAttribute("playsinline", "");
+          videoElement.preload = "metadata";
+          videoElement.poster = image;
+          videoElement.style.aspectRatio = aspect;
+
+          modalMedia.appendChild(videoElement);
+        } else {
+          const iframe = document.createElement("iframe");
+
+          iframe.src = `https://drive.google.com/file/d/${googleDriveFileId}/preview`;
+          iframe.title = `${title} video`;
+          iframe.allow = "autoplay; fullscreen";
+          iframe.allowFullscreen = true;
+          iframe.style.aspectRatio = aspect;
+
+          if (aspect === "9 / 16") {
+            iframe.classList.add("is-portrait");
+          }
+
+          hideCursorOverEmbeddedVideo(iframe);
+          modalMedia.appendChild(iframe);
         }
-
-        hideCursorOverEmbeddedVideo(iframe);
-        modalMedia.appendChild(iframe);
         return;
       }
 
