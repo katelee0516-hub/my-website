@@ -2027,6 +2027,43 @@
                作品 01：動畫 / PROJECT 01: MOTION
           ================================================== -->
 
+          <article class="project-item reveal" data-category="motion">
+            <div
+              class="project-card"
+              data-type="video"
+              data-title="情緒／氛圍短片"
+              data-description="以畫面節奏與氛圍傳達感受的情緒導向影像創作。"
+              data-tools="ComfyUI · Minimax H3 · After Effects"
+              data-image="https://drive.google.com/thumbnail?id=1w9NJ-OTFxg2ytIQ159s0NC-3p6jyqBcI&sz=w1000"
+              data-video="https://drive.google.com/file/d/1w9NJ-OTFxg2ytIQ159s0NC-3p6jyqBcI/view?usp=drive_link"
+              data-aspect="16 / 9"
+            >
+              <div class="project-media">
+                <img
+                  class="project-image"
+                  src="https://drive.google.com/thumbnail?id=1w9NJ-OTFxg2ytIQ159s0NC-3p6jyqBcI&sz=w1000"
+                  alt="情緒／氛圍短片"
+                  loading="lazy"
+                />
+                <div class="project-shade"></div>
+                <div class="project-type-icon"><span class="play-symbol"></span></div>
+              </div>
+
+              <div class="project-info">
+                <div class="flex justify-between gap-3">
+                  <h3 class="project-title">Mood Film</h3>
+                  <span class="project-number">01</span>
+                </div>
+                <p class="project-description">Cinematic Mood Film · AI</p>
+              </div>
+            </div>
+          </article>
+
+
+          <!-- =================================================
+               作品 02：動畫 / PROJECT 02: MOTION
+          ================================================== -->
+
           <article
             class="
               project-item
@@ -2087,7 +2124,7 @@
                   </h3>
 
                   <span class="project-number">
-                    01
+                    02
                   </span>
 
                 </div>
@@ -2105,7 +2142,7 @@
 
 
           <!-- =================================================
-               作品 02：平面 / PROJECT 02: GRAPHIC
+               作品 03：平面 / PROJECT 03: GRAPHIC
           ================================================== -->
 
           <article
@@ -3714,6 +3751,15 @@
       document.querySelectorAll(
         ".project-card"
       );
+
+    /* 作品排序依卡片順序自動編號 / Auto-number project cards */
+    projectCards.forEach((card, index) => {
+      const number = card.querySelector(".project-number");
+
+      if (number) {
+        number.textContent = String(index + 1).padStart(2, "0");
+      }
+    });
 
     let currentProjectCard = null;
 
